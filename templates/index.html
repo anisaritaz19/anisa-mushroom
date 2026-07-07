@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Anisa &mdash; Unggah &amp; Identifikasi Jamur{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-6">
+      <p class="eyebrow">Field Identification Tool</p>
+      <h1 class="hero-title">Foto jamurnya,<br>biar Xception yang menebak.</h1>
+      <p class="hero-desc">
+        Unggah satu foto jamur dan sistem akan menganalisis pola tudung, insang,
+        serta tekstur permukaannya menggunakan model <em>transfer learning</em>
+        Xception yang telah dilatih ulang pada 12 spesies jamur.
+      </p>
+      <ul class="hero-points">
+        <li><i class="bi bi-check2-circle"></i> Arsitektur Xception, pretrained ImageNet</li>
+        <li><i class="bi bi-check2-circle"></i> Fine-tuning ringan pada 12 kelas jamur</li>
+        <li><i class="bi bi-check2-circle"></i> Skor keyakinan (confidence) untuk tiap prediksi</li>
+      </ul>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="specimen-tray">
+        <div class="tray-label">SAMPEL &mdash; UPLOAD ZONE</div>
+        <form action="{{ url_for('predict_route') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+          <div class="dropzone" id="dropzone">
+            <input class="visually-hidden" type="file" name="image" id="fileInput" accept=".png,.jpg,.jpeg,.webp" required>
+            <div id="dropzoneContent" class="dropzone-content">
+              <i class="bi bi-cloud-arrow-up dropzone-icon"></i>
+              <p class="dropzone-text">Seret &amp; letakkan foto jamur di sini</p>
+              <p class="dropzone-subtext">atau klik untuk memilih file &bull; PNG / JPG / WEBP, maks {{ config_max_mb|default(8) }}MB</p>
+            </div>
+            <img id="previewImage" class="preview-image d-none" alt="Preview gambar jamur">
+          </div>
+
+          <button type="submit" class="btn btn-identify w-100 mt-3" id="submitBtn" disabled>
+            <i class="bi bi-search me-1"></i> Identifikasi Jamur
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if prediction %}
+<section class="result-section">
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="result-photo-card">
+        <img src="{{ image_url }}" alt="Gambar yang diunggah" class="result-photo">
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="specimen-card">
+        <div class="specimen-card-header">
+          <span class="specimen-tag">SPECIMEN RECORD</span>
+          <span class="specimen-conf-badge">{{ "%.1f"|format(prediction.confidence) }}% confidence</span>
+        </div>
+
+        <h2 class="specimen-name">{{ prediction.predicted_class.replace('_', ' ') }}</h2>
+
+        <dl class="taxonomy-list">
+          <div class="taxonomy-row">
+            <dt>Kingdom</dt><dd>Fungi</dd>
+          </div>
+          <div class="taxonomy-row">
+            <dt>Metode</dt><dd>Transfer Learning &mdash; Xception (ImageNet)</dd>
+          </div>
+          <div class="taxonomy-row">
+            <dt>Prediksi</dt><dd>{{ prediction.predicted_class.replace('_', ' ') }}</dd>
+          </div>
+          <div class="taxonomy-row">
+            <dt>Confidence</dt>
+            <dd>
+              <div class="confidence-bar-track">
+                <div class="confidence-bar-fill" style="width: {{ prediction.confidence }}%;"></div>
+              </div>
+              <span class="confidence-value">{{ "%.2f"|format(prediction.confidence) }}%</span>
+            </dd>
+          </div>
+        </dl>
+
+        <hr class="specimen-divider">
+
+        <h3 class="top-k-title">Kemungkinan lain</h3>
+        <ul class="top-k-list">
+          {% for cls, conf in prediction.top_k %}
+          <li>
+            <span class="top-k-name">{{ cls.replace('_', ' ') }}</span>
+            <span class="top-k-track">
+              <span class="top-k-fill" style="width: {{ conf }}%;"></span>
+            </span>
+            <span class="top-k-value">{{ "%.1f"|format(conf) }}%</span>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <p class="disclaimer">
+          <i class="bi bi-info-circle me-1"></i>
+          Hasil identifikasi otomatis ini bersifat edukatif dan <strong>tidak boleh</strong>
+          dijadikan satu-satunya acuan untuk menentukan apakah suatu jamur aman
+          dikonsumsi. Konsultasikan dengan ahli mikologi untuk keperluan konsumsi.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

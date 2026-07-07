@@ -1,0 +1,42 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.Python
+build/
+dist/
+
+# --- Model ---
+model/*.keras
+model/*.h5
+!model/class_names.json
+
+# --- Virtual environments ---
+venv/
+env/
+.venv/
+
+# --- Dataset ---
+data/
+data_subset/
+data_split/
+
+# --- Uploaded images ---
+static/uploads/*
+!static/uploads/.gitkeep
+
+# --- Environment variables ---
+.env
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Logs ---
+*.log

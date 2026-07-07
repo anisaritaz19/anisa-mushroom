@@ -1,0 +1,20 @@
+Test Accuracy: 59.78%
+
+              precision    recall  f1-score   support
+
+    Agaricus     0.5652    0.5652    0.5652        23
+     Amanita     0.5517    0.6957    0.6154        23
+     Boletus     0.7200    0.7826    0.7500        23
+ Cortinarius     0.8182    0.3913    0.5294        23
+    Entoloma     0.4444    0.3478    0.3902        23
+      Exidia     0.9048    0.8261    0.8636        23
+   Hygrocybe     0.6897    0.8696    0.7692        23
+     Inocybe     0.3333    0.1304    0.1875        23
+   Lactarius     0.4643    0.5652    0.5098        23
+     Pluteus     0.5600    0.6087    0.5833        23
+     Russula     0.5000    0.6087    0.5490        23
+     Suillus     0.6000    0.7826    0.6792        23
+
+    accuracy                         0.5978       276
+   macro avg     0.5960    0.5978    0.5827       276
+weighted avg     0.5960    0.5978    0.5827       276

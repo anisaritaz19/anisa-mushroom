@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Halaman Tidak Ditemukan &mdash; Anisa{% endblock %}
+
+{% block content %}
+<section class="text-center py-5">
+  <p class="eyebrow">404</p>
+  <h1 class="hero-title">Spesimen tidak ditemukan</h1>
+  <p class="hero-desc">Halaman yang Anda cari tidak tersedia.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-identify mt-3">
+    <i class="bi bi-house me-1"></i> Kembali ke Beranda
+  </a>
+</section>
+{% endblock %}

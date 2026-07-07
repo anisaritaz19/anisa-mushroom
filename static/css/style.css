@@ -1,0 +1,408 @@
+/* ==========================================================================
+   Anisa - Mushroom Classifier
+   Design tokens: field-guide / mycology notebook aesthetic
+   ========================================================================== */
+
+:root {
+  --canopy: #16281F;      /* deep forest green - header/footer */
+  --moss: #4C6B4F;        /* secondary green accent */
+  --spore: #F3EFE3;       /* warm cream background */
+  --spore-2: #EAE3D2;     /* slightly deeper cream for cards */
+  --cap-rust: #9C4A2E;    /* primary accent - chestnut mushroom cap */
+  --gill-amber: #C6912F;  /* secondary accent / highlight */
+  --ink: #2A2620;         /* main text */
+  --ink-soft: #5C574C;    /* muted text */
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Work Sans", -apple-system, Segoe UI, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--spore);
+  color: var(--ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1; }
+
+a { color: var(--cap-rust); }
+a:hover { color: var(--gill-amber); }
+
+/* ---------------------------------------------------------------------- */
+/* Header / Navbar                                                         */
+/* ---------------------------------------------------------------------- */
+.site-header {
+  background-color: var(--canopy);
+  border-bottom: 3px solid var(--gill-amber);
+}
+
+.navbar-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--spore) !important;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.brand-mark { color: var(--gill-amber); font-size: 1.2rem; }
+
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-left: 0.3rem;
+}
+
+.navbar-nav .nav-link {
+  color: rgba(243, 239, 227, 0.85) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+.navbar-nav .nav-link:hover { color: var(--gill-amber) !important; }
+
+.navbar-toggler { border-color: rgba(243,239,227,0.3); }
+
+/* ---------------------------------------------------------------------- */
+/* Hero                                                                     */
+/* ---------------------------------------------------------------------- */
+.hero { padding: 2.5rem 0 1.5rem; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.15;
+  color: var(--canopy);
+  margin-bottom: 1rem;
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  max-width: 46ch;
+  margin-bottom: 1.2rem;
+}
+
+.hero-points {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.hero-points li { color: var(--ink); font-weight: 500; }
+.hero-points i { color: var(--cap-rust); margin-right: 0.4rem; }
+
+/* ---------------------------------------------------------------------- */
+/* Specimen tray (upload dropzone container)                               */
+/* ---------------------------------------------------------------------- */
+.specimen-tray {
+  background: var(--spore-2);
+  border: 1px solid rgba(42,38,32,0.1);
+  border-radius: 14px;
+  padding: 1.4rem;
+  box-shadow: 0 10px 30px rgba(22,40,31,0.08);
+}
+
+.tray-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--moss);
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.dropzone {
+  position: relative;
+  border: 2px dashed rgba(76,107,79,0.45);
+  border-radius: 10px;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--spore);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  overflow: hidden;
+}
+
+.dropzone:hover, .dropzone.dragover {
+  border-color: var(--cap-rust);
+  background: #fbf9f3;
+}
+
+.dropzone-content { text-align: center; padding: 1.5rem; }
+
+.dropzone-icon {
+  font-size: 2.6rem;
+  color: var(--cap-rust);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.dropzone-text { font-weight: 600; margin-bottom: 0.2rem; color: var(--ink); }
+.dropzone-subtext { font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 0; }
+
+.preview-image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.btn-identify {
+  background-color: var(--cap-rust);
+  border-color: var(--cap-rust);
+  color: var(--spore);
+  font-weight: 600;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.btn-identify:hover:not(:disabled) {
+  background-color: #7d3b23;
+  border-color: #7d3b23;
+  color: var(--spore);
+}
+.btn-identify:disabled { opacity: 0.55; }
+
+/* ---------------------------------------------------------------------- */
+/* Result section - specimen card                                          */
+/* ---------------------------------------------------------------------- */
+.result-section { margin-top: 2.5rem; }
+
+.result-photo-card {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(22,40,31,0.12);
+  border: 1px solid rgba(42,38,32,0.08);
+}
+.result-photo { width: 100%; height: 100%; max-height: 480px; object-fit: cover; display: block; }
+
+.specimen-card {
+  background: var(--spore-2);
+  border-radius: 14px;
+  padding: 1.8rem;
+  border: 1px solid rgba(42,38,32,0.1);
+  box-shadow: 0 10px 30px rgba(22,40,31,0.08);
+  height: 100%;
+}
+
+.specimen-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.specimen-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--moss);
+  font-weight: 600;
+}
+
+.specimen-conf-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: var(--canopy);
+  color: var(--spore);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+}
+
+.specimen-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9rem;
+  color: var(--cap-rust);
+  margin-bottom: 1.2rem;
+  text-transform: capitalize;
+}
+
+.taxonomy-list { margin-bottom: 0; }
+.taxonomy-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0.8rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed rgba(42,38,32,0.15);
+  align-items: center;
+}
+.taxonomy-row dt {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.taxonomy-row dd { margin: 0; font-weight: 500; text-transform: capitalize; }
+
+.confidence-bar-track {
+  background: rgba(42,38,32,0.1);
+  border-radius: 999px;
+  height: 10px;
+  width: 100%;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.6rem;
+}
+.confidence-bar-fill {
+  background: linear-gradient(90deg, var(--gill-amber), var(--cap-rust));
+  height: 100%;
+  border-radius: 999px;
+}
+.confidence-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.specimen-divider { border-color: rgba(42,38,32,0.12); margin: 1.3rem 0; }
+
+.top-k-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-bottom: 0.8rem;
+}
+
+.top-k-list { list-style: none; padding: 0; margin-bottom: 1.2rem; }
+.top-k-list li {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.35rem 0;
+  font-size: 0.88rem;
+}
+.top-k-name { text-transform: capitalize; color: var(--ink); }
+.top-k-track {
+  background: rgba(42,38,32,0.08);
+  border-radius: 999px;
+  height: 7px;
+  display: block;
+  overflow: hidden;
+}
+.top-k-fill { background: var(--moss); height: 100%; display: block; border-radius: 999px; }
+.top-k-value { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); text-align: right; }
+
+.disclaimer {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  background: rgba(198,145,47,0.12);
+  border-left: 3px solid var(--gill-amber);
+  padding: 0.7rem 0.9rem;
+  border-radius: 6px;
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* About page                                                               */
+/* ---------------------------------------------------------------------- */
+.about-card, .about-side-card {
+  background: var(--spore-2);
+  border-radius: 14px;
+  padding: 1.8rem;
+  border: 1px solid rgba(42,38,32,0.1);
+  height: 100%;
+}
+
+.about-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--canopy);
+  margin-top: 1.4rem;
+  margin-bottom: 0.6rem;
+}
+.about-card h2:first-child { margin-top: 0; }
+.about-card p, .about-card li { color: var(--ink); }
+.about-steps { padding-left: 1.2rem; }
+.about-steps li { margin-bottom: 0.5rem; }
+
+.tech-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.tech-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--canopy);
+  color: var(--spore);
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+}
+
+.about-side-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--canopy);
+  margin-bottom: 0.8rem;
+}
+.project-tree {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  background: var(--spore);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(42,38,32,0.1);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Footer                                                                   */
+/* ---------------------------------------------------------------------- */
+.site-footer {
+  background: var(--canopy);
+  color: rgba(243,239,227,0.85);
+  padding: 1.4rem 0;
+  margin-top: 3rem;
+  font-size: 0.85rem;
+}
+.text-muted-light { color: rgba(243,239,227,0.55) !important; }
+
+/* ---------------------------------------------------------------------- */
+/* Responsive                                                               */
+/* ---------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .hero { padding: 1.5rem 0 1rem; }
+  .taxonomy-row { grid-template-columns: 1fr; }
+  .top-k-list li { grid-template-columns: 1fr; row-gap: 0.3rem; }
+  .specimen-name { font-size: 1.5rem; }
+}
+
+/* Accessibility: visible focus states */
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--cap-rust);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

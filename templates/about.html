@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Tentang Proyek &mdash; Anisa{% endblock %}
+
+{% block content %}
+<section class="about-page">
+  <p class="eyebrow">Dokumentasi Singkat</p>
+  <h1 class="hero-title mb-4">Tentang Proyek Anisa</h1>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="about-card">
+        <h2>Ringkasan</h2>
+        <p>
+          <strong>Anisa</strong> adalah aplikasi web untuk mengklasifikasikan jenis
+          jamur dari foto, dibangun sebagai proyek tugas kuliah. Sistem memanfaatkan
+          <em>transfer learning</em> dari arsitektur <strong>Xception</strong> yang
+          telah dilatih sebelumnya (pretrained) pada dataset ImageNet, kemudian
+          dilakukan <em>fine-tuning</em> ringan pada dataset 12 spesies jamur.
+        </p>
+
+        <h2>Dataset</h2>
+        <p>
+          Dataset yang digunakan adalah
+          <a href="https://www.kaggle.com/datasets/mdhasanahmad/12-mushroom-species-dataset" target="_blank" rel="noopener">
+            12 Mushroom Species Dataset
+          </a> dari Kaggle, diunduh secara otomatis menggunakan pustaka
+          <code>kagglehub</code>. Untuk mempercepat proses pelatihan pada lingkup
+          tugas kuliah, digunakan <strong>subset</strong> sekitar 150 gambar per
+          kelas (&asymp; 1.000&ndash;2.000 gambar total dari 12 kelas), dibagi
+          menjadi data latih (70%), validasi (15%), dan uji (15%).
+        </p>
+
+        <h2>Arsitektur Model</h2>
+        <ol class="about-steps">
+          <li><strong>Base model:</strong> Xception, <code>include_top=False</code>, bobot ImageNet, dibekukan pada tahap awal.</li>
+          <li><strong>Head classifier:</strong> Global Average Pooling &rarr; Dense(256, ReLU) &rarr; Dropout(0.3) &rarr; Dense(12, Softmax).</li>
+          <li><strong>Tahap 1:</strong> melatih head classifier saja (base dibekukan) selama beberapa epoch.</li>
+          <li><strong>Tahap 2:</strong> fine-tuning ringan &mdash; membuka 30 layer teratas Xception dengan learning rate sangat kecil.</li>
+          <li><strong>Regularisasi:</strong> EarlyStopping (memantau val_loss) &amp; ModelCheckpoint (menyimpan model dengan val_accuracy terbaik).</li>
+        </ol>
+
+        <h2>Evaluasi</h2>
+        <p>
+          Model dievaluasi pada data uji yang belum pernah dilihat selama
+          pelatihan. Metrik yang dilaporkan meliputi <em>accuracy</em>,
+          <em>classification report</em> (precision, recall, F1-score per
+          kelas), serta <em>confusion matrix</em> yang divisualisasikan sebagai
+          heatmap. Semua artefak evaluasi tersimpan di folder <code>model/</code>
+          setelah <code>train.py</code> dijalankan.
+        </p>
+
+        <h2>Teknologi</h2>
+        <div class="tech-badges">
+          <span class="tech-badge">Python</span>
+          <span class="tech-badge">Flask</span>
+          <span class="tech-badge">TensorFlow / Keras</span>
+          <span class="tech-badge">Xception (ImageNet)</span>
+          <span class="tech-badge">Bootstrap 5</span>
+          <span class="tech-badge">kagglehub</span>
+          <span class="tech-badge">scikit-learn</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="about-side-card">
+        <h3>Struktur Proyek</h3>
+        <pre class="project-tree">anisa-mushroom-classifier/
+├── app.py
+├── train.py
+├── predict.py
+├── config.py
+├── requirements.txt
+├── Procfile
+├── runtime.txt
+├── render.yaml
+├── templates/
+├── static/
+└── model/</pre>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
